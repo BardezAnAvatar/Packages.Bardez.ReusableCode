@@ -80,6 +80,36 @@ namespace InfinityPlus1.ReusableCode
             Encoding encoding = Encoding.GetEncoding(culture.TextInfo.ANSICodePage);
             return encoding.GetString(temp);
         }
+
+        /// <summary>This public method returns a FileStream from a given FilePath</summary>
+        /// <param name="FilePath">String indicating the path of the file to open</param>
+        /// <returns>A FileStream object</returns>
+        /// <remarks>Remember that FileStream is IDisposable</remarks>
+        public static FileStream OpenFile(String FilePath)
+        {
+            return OpenFile(FilePath, FileAccess.Read);
+        }
+
+        /// <summary>This public method returns a FileStream from a given FilePath</summary>
+        /// <param name="FilePath">String indicating the path of the file to open</param>
+        /// <param name="AccessFlags">AccessFlags enumerator describing how toaccess the file</param>
+        /// <returns>A FileStream object</returns>
+        /// <remarks>Remember that FileStream is IDisposable</remarks>
+        public static FileStream OpenFile(String FilePath, FileAccess AccessFlags)
+        {
+            return OpenFile(FilePath, FileMode.Open, AccessFlags);
+        }
+
+        /// <summary>This public method returns a FileStream from a given FilePath</summary>
+        /// <param name="FilePath">String indicating the path of the file to open</param>
+        /// <param name="FileOpenMode">FileOpenMode enumerator describing how to deal with opening the file (creation, append, open, etc.)</param>
+        /// <param name="AccessFlags">AccessFlags enumerator describing how toaccess the file</param>
+        /// <returns>A FileStream object</returns>
+        /// <remarks>Remember that FileStream is IDisposable</remarks>
+        public static FileStream OpenFile(String FilePath, FileMode FileOpenMode, FileAccess AccessFlags)
+        {
+            return new FileStream(FilePath, FileOpenMode, AccessFlags);
+        }
         #endregion
 
         #region Private Helper Methods
