@@ -112,6 +112,19 @@ namespace InfinityPlus1.ReusableCode
         }
         #endregion
 
+        /// <summary>This public method seeks the data stream to an appropriate position if the stream is not currently positioned there.</summary>
+        /// <param name="DataStream">Stream that needs to seek</param>
+        /// <param name="SeekPosition">Target position of the stream</param>
+        /// <param name="SeekOrientation">SeekOrigin enumerator for where in the Stream to seek from</param>
+        /// <remarks>This does not yet properly support any seek operation other than Begin</remarks>
+        public static void SeekIfAble(Stream DataStream, Int64 SeekPosition, SeekOrigin SeekOrientation)
+        {
+            if (DataStream.Position != SeekPosition && DataStream.CanSeek)
+                DataStream.Seek(Convert.ToInt64(SeekPosition), SeekOrientation);
+            else if (DataStream.Position != SeekPosition && !DataStream.CanSeek)
+                throw new InvalidOperationException("Stream cannot seek and position is not correct.");
+        }
+
         #region Private Helper Methods
         /// <summary>
         ///     This private method will read binary data of a given length from an array and return that sub-array.
