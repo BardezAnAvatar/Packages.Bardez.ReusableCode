@@ -69,6 +69,7 @@ namespace InfinityPlus1.ReusableCode
         /// <summary>This public method reads a string from a byte array of an ASCII-encoding</summary>
         /// <param name="Source">Byte array to read from</param>
         /// <param name="Offset">Offset within the byte array to read from</param>
+        /// <param name="CultureRef">String describing the culture info for ASCII encoding</param>
         /// <param name="Length">Optional parameter indicating the length of the string to read. The default value is 8, for resource references.</param>
         /// <returns>The string read from the byte array</returns>
         public static String ReadStringFromByteArray(ref Byte[] Source, Int32 Offset, String CultureRef, Int32 Length = 8)
@@ -79,6 +80,72 @@ namespace InfinityPlus1.ReusableCode
             CultureInfo culture = new CultureInfo(CultureRef);
             Encoding encoding = Encoding.GetEncoding(culture.TextInfo.ANSICodePage);
             return encoding.GetString(temp);
+        }
+
+        /// <summary>This public method writes a string to a byte array of an ASCII-encoding</summary>
+        /// <param name="Source">String to write</param>
+        /// <param name="CultureRef">String describing the culture info for ASCII encoding</param>
+        /// <returns>A Byte array containing the bytes of the string</returns>
+        public static Byte[] WriteStringToByteArray(String Source, String CultureRef)
+        {
+            CultureInfo culture = new CultureInfo(CultureRef);
+            Encoding encoding = Encoding.GetEncoding(culture.TextInfo.ANSICodePage);
+
+            return encoding.GetBytes(Source);
+        }
+
+        /// <summary>This public method writes a string to a byte array of an ASCII-encoding</summary>
+        /// <param name="Source">String to write</param>
+        /// <param name="CultureRef">String describing the culture info for ASCII encoding</param>
+        /// <param name="Length">Optional parameter indicating the length of the byte array to return. The default value is 8, for resource references.</param>
+        /// <returns>A Byte array containing the bytes of the string</returns>
+        public static Byte[] WriteStringToDataField(String Source, String CultureRef, Int32 Length = 8)
+        {
+            //The return array
+            Byte[] returnArray = new Byte[Length];
+            for (Int32 i = 0; i < Length; ++i)
+                returnArray[i] = 0;
+
+            CultureInfo culture = new CultureInfo(CultureRef);
+            Encoding encoding = Encoding.GetEncoding(culture.TextInfo.ANSICodePage);
+
+            Byte[] stringBytes = encoding.GetBytes(Source);
+            Array.Copy(stringBytes, returnArray, stringBytes.Length < Length ? stringBytes.Length : Length);
+
+            return returnArray;
+        }
+
+        /// <summary>This public method writes a string to a byte array of an ASCII-encoding</summary>
+        /// <param name="Source">String to write</param>
+        /// <param name="Length">Optional parameter indicating the length of the byte array to return. The default value is 8, for resource references.</param>
+        /// <returns>A Byte array containing the bytes of the string</returns>
+        public static Byte[] WriteStringToDataField(String Source, Int32 Length = 8)
+        {
+            //The return array
+            Byte[] returnArray = new Byte[Length];
+            for (Int32 i = 0; i < Length; ++i)
+                returnArray[i] = 0;
+
+            ASCIIEncoding encoding = new ASCIIEncoding();
+
+            Byte[] stringBytes = encoding.GetBytes(Source);
+            Array.Copy(stringBytes, returnArray, stringBytes.Length < Length ? stringBytes.Length : Length);
+
+            return returnArray;
+        }
+
+        /// <summary>This public method writes a string to a byte array of an ASCII-encoding</summary>
+        /// <param name="Source">String to write</param>
+        /// <param name="Output">Stream into which to write the string</param>
+        /// <param name="CultureRef">String describing the culture info for ASCII encoding</param>
+        /// <returns>A Byte array containing the bytes of the string</returns>
+        public static void WriteStringToStream(String Source, Stream Output, String CultureRef)
+        {
+            CultureInfo culture = new CultureInfo(CultureRef);
+            Encoding encoding = Encoding.GetEncoding(culture.TextInfo.ANSICodePage);
+
+            Byte[] temp = encoding.GetBytes(Source ?? String.Empty);
+            Output.Write(temp, 0, temp.Length);
         }
 
         /// <summary>This public method returns a FileStream from a given FilePath</summary>
