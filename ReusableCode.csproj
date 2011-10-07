@@ -8,14 +8,18 @@
     <ProjectGuid>{72729DA3-9933-4C3D-91C6-2CF0336D6493}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ReusableCode</RootNamespace>
+    <RootNamespace>Bardez.Projects.ReusableCode</RootNamespace>
     <AssemblyName>ReusableCode</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,7 +43,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileIO.cs" />
+    <Compile Include="GenericOrderedDictionary.cs" />
+    <Compile Include="Int32Extension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="String Format.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

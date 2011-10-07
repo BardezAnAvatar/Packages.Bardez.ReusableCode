@@ -3,27 +3,39 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace InfinityPlus1.ReusableCode
+namespace Bardez.Projects.ReusableCode
 {
     /// <summary>This public class is just a collection of static methods that can be reused from many different code locations.</summary>
     public static class ReusableIO
     {
         #region Public Methods
         /// <summary>This public method reads</summary>
-        /// <param name="Input">Stream to read from</param>
-        /// <param name="ReadLength">Length of binary data to read</param>
+        /// <param name="input">Stream to read from</param>
+        /// <param name="readLength">Length of binary data to read</param>
         /// <returns>a Byte array containing the read data</returns>
-        public static Byte[] BinaryRead(Stream Input, Int32 ReadLength)
+        public static Byte[] BinaryRead(Stream input, Int32 readLength)
+        {
+            return BinaryRead(input, Convert.ToInt64(readLength));
+        }
+
+        /// <summary>This public method reads</summary>
+        /// <param name="input">Stream to read from</param>
+        /// <param name="readLength">Length of binary data to read</param>
+        /// <returns>a Byte array containing the read data</returns>
+        public static Byte[] BinaryRead(Stream input, Int64 readLength)
         {
             Int32 offset = 0;
-            Int32 remainingLength = ReadLength;
-            Byte[] returnArr = new Byte[ReadLength];
+            Int64 remainingLength = readLength;
+            Byte[] returnArr = new Byte[readLength];
 
             //read repeatedly from the stream. this accounts for reading that stops before eof, if the stream is buffered by a slow drive of network, etc.
-            while (remainingLength > 0)
+            while (remainingLength > 0L)
             {
+                //Stream read cannot use a long, so shorten it as/if necessary
+                Int32 readSize = remainingLength > Int32.MaxValue ? Int32.MaxValue : Convert.ToInt32(remainingLength);
+
                 //do the read
-                Int32 readCount = Input.Read(returnArr, offset, remainingLength);
+                Int32 readCount = input.Read(returnArr, offset, readSize);
 
                 //if there was a problem with the read
                 if (readCount < 1)
@@ -36,43 +48,74 @@ namespace InfinityPlus1.ReusableCode
             return returnArr;
         }
 
+        #region Read ... From Byte Array
         /// <summary>This public method reads an Int16 from the source array</summary>
         /// <param name="Source">The source array to read from</param>
         /// <param name="Offset">The offset within the source array to read from</param>
         /// <returns>The Int16 read from the array</returns>
-        public static Int16 ReadInt16FromArray(ref Byte[] Source, Int32 Offset)
+        public static Int16 ReadInt16FromArray(Byte[] Source, Int32 Offset)
         {
-            Byte[] buffer = ReadVariableFromArray(ref Source, 2, Offset);
+            Byte[] buffer = ReadVariableFromArray(Source, 2, Offset);
             return BitConverter.ToInt16(buffer, 0);
+        }
+
+        /// <summary>This public method reads an unsigned Int16 from the source array</summary>
+        /// <param name="Source">The source array to read from</param>
+        /// <param name="Offset">The offset within the source array to read from</param>
+        /// <returns>The UInt16 read from the array</returns>
+        public static UInt16 ReadUInt16FromArray(Byte[] Source, Int32 Offset)
+        {
+            Byte[] buffer = ReadVariableFromArray(Source, 2, Offset);
+            return BitConverter.ToUInt16(buffer, 0);
         }
 
         /// <summary>This public method reads an Int32 from the source array</summary>
         /// <param name="Source">The source array to read from</param>
         /// <param name="Offset">The offset within the source array to read from</param>
         /// <returns>The Int32 read from the array</returns>
-        public static Int32 ReadInt32FromArray(ref Byte[] Source, Int32 Offset)
+        public static Int32 ReadInt32FromArray(Byte[] Source, Int32 Offset)
         {
-            Byte[] buffer = ReadVariableFromArray(ref Source, 4, Offset);
+            Byte[] buffer = ReadVariableFromArray(Source, 4, Offset);
             return BitConverter.ToInt32(buffer, 0);
         }
-        
+
+        /// <summary>This public method reads an unsigned Int32 from the source array</summary>
+        /// <param name="Source">The source array to read from</param>
+        /// <param name="Offset">The offset within the source array to read from</param>
+        /// <returns>The UInt32 read from the array</returns>
+        public static UInt32 ReadUInt32FromArray(Byte[] Source, Int32 Offset)
+        {
+            Byte[] buffer = ReadVariableFromArray(Source, 4, Offset);
+            return BitConverter.ToUInt32(buffer, 0);
+        }
+
         /// <summary>This public method reads an Int64 from the source array</summary>
         /// <param name="Source">The source array to read from</param>
         /// <param name="Offset">The offset within the source array to read from</param>
         /// <returns>The Int64 read from the array</returns>
-        public static Int64 ReadInt64FromArray(ref Byte[] Source, Int32 Offset)
+        public static Int64 ReadInt64FromArray(Byte[] Source, Int32 Offset)
         {
-            Byte[] buffer = ReadVariableFromArray(ref Source, 8, Offset);
+            Byte[] buffer = ReadVariableFromArray(Source, 8, Offset);
             return BitConverter.ToInt64(buffer, 0);
+        }
+
+        /// <summary>This public method reads an unsigned Int64 from the source array</summary>
+        /// <param name="Source">The source array to read from</param>
+        /// <param name="Offset">The offset within the source array to read from</param>
+        /// <returns>The UInt64 read from the array</returns>
+        public static UInt64 ReadUInt64FromArray(Byte[] Source, Int32 Offset)
+        {
+            Byte[] buffer = ReadVariableFromArray(Source, 8, Offset);
+            return BitConverter.ToUInt64(buffer, 0);
         }
 
         /// <summary>This public method reads a string from a byte array of an ASCII-encoding</summary>
         /// <param name="Source">Byte array to read from</param>
         /// <param name="Offset">Offset within the byte array to read from</param>
-        /// <param name="CultureRef">String describing the culture info for ASCII encoding</param>
+        /// <param name="cultureRef">String describing the culture info for ASCII encoding</param>
         /// <param name="Length">Optional parameter indicating the length of the string to read. The default value is 8, for resource references.</param>
         /// <returns>The string read from the byte array</returns>
-        public static String ReadStringFromByteArray(ref Byte[] Source, Int32 Offset, String CultureRef, Int32 Length = 8)
+        public static String ReadStringFromByteArray(Byte[] Source, Int32 Offset, String CultureRef, Int32 Length = 8)
         {
             Byte[] temp = new Byte[Length];
             Array.Copy(Source, Offset, temp, 0, Length);
@@ -81,10 +124,12 @@ namespace InfinityPlus1.ReusableCode
             Encoding encoding = Encoding.GetEncoding(culture.TextInfo.ANSICodePage);
             return encoding.GetString(temp);
         }
+        #endregion
 
+        #region Write String to Byte Array
         /// <summary>This public method writes a string to a byte array of an ASCII-encoding</summary>
         /// <param name="Source">String to write</param>
-        /// <param name="CultureRef">String describing the culture info for ASCII encoding</param>
+        /// <param name="cultureRef">String describing the culture info for ASCII encoding</param>
         /// <returns>A Byte array containing the bytes of the string</returns>
         public static Byte[] WriteStringToByteArray(String Source, String CultureRef)
         {
@@ -96,10 +141,10 @@ namespace InfinityPlus1.ReusableCode
 
         /// <summary>This public method writes a string to a byte array of an ASCII-encoding</summary>
         /// <param name="Source">String to write</param>
-        /// <param name="CultureRef">String describing the culture info for ASCII encoding</param>
+        /// <param name="cultureRef">String describing the culture info for ASCII encoding</param>
         /// <param name="Length">Optional parameter indicating the length of the byte array to return. The default value is 8, for resource references.</param>
         /// <returns>A Byte array containing the bytes of the string</returns>
-        public static Byte[] WriteStringToDataField(String Source, String CultureRef, Int32 Length = 8)
+        public static Byte[] WriteStringToByteArray(String Source, String CultureRef, Int32 Length = 8)
         {
             //The return array
             Byte[] returnArray = new Byte[Length];
@@ -119,7 +164,7 @@ namespace InfinityPlus1.ReusableCode
         /// <param name="Source">String to write</param>
         /// <param name="Length">Optional parameter indicating the length of the byte array to return. The default value is 8, for resource references.</param>
         /// <returns>A Byte array containing the bytes of the string</returns>
-        public static Byte[] WriteStringToDataField(String Source, Int32 Length = 8)
+        public static Byte[] WriteStringToByteArray(String Source, Int32 Length = 8)
         {
             //The return array
             Byte[] returnArray = new Byte[Length];
@@ -133,21 +178,99 @@ namespace InfinityPlus1.ReusableCode
 
             return returnArray;
         }
+        #endregion
 
+        #region Write primitive to Steam
         /// <summary>This public method writes a string to a byte array of an ASCII-encoding</summary>
-        /// <param name="Source">String to write</param>
-        /// <param name="Output">Stream into which to write the string</param>
-        /// <param name="CultureRef">String describing the culture info for ASCII encoding</param>
+        /// <param name="source">String to write</param>
+        /// <param name="output">Stream into which to write the string</param>
+        /// <param name="cultureRef">String describing the culture info for ASCII encoding</param>
+        /// <param name="entireString">Boolean indicating whether or not to write the full String binary contents</param>
+        /// <param name="requiredLength">Length of the character array being written to. -1 means full string, default = 8</param>
         /// <returns>A Byte array containing the bytes of the string</returns>
-        public static void WriteStringToStream(String Source, Stream Output, String CultureRef)
+        public static void WriteStringToStream(String source, Stream output, String cultureRef, Boolean entireString = false, Int32 requiredLength = 8)
         {
-            CultureInfo culture = new CultureInfo(CultureRef);
+            CultureInfo culture = new CultureInfo(cultureRef);
             Encoding encoding = Encoding.GetEncoding(culture.TextInfo.ANSICodePage);
 
-            Byte[] temp = encoding.GetBytes(Source ?? String.Empty);
-            Output.Write(temp, 0, temp.Length);
+            Byte[] temp;
+            if (entireString)
+                temp = encoding.GetBytes(source ?? String.Empty);
+            else
+            {
+                temp = new Byte[requiredLength];
+                Byte[] temp2 = encoding.GetBytes(source ?? String.Empty);
+                Int32 length = temp2.Length > temp.Length ? temp.Length : temp2.Length;
+                Array.Copy(temp2, temp, length);
+            }
+
+            output.Write(temp, 0, temp.Length);
         }
 
+        /// <summary>This public method writes a signed byte to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">SByte to write</param>
+        /// <param name="output"><see cref="System.IO.Stream" /> to write to.</param>
+        public static void WriteSByteToStream(SByte datum, Stream output)
+        {
+            output.WriteByte((Byte)datum);
+        }
+
+        /// <summary>This public method writes a signed Int16 to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">Int16 to write</param>
+        /// <param name="output"><see cref="System.IO.Stream" /> to write to.</param>
+        public static void WriteInt16ToStream(Int16 datum, Stream output)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            output.Write(writeBytes, 0, writeBytes.Length);
+        }
+
+        /// <summary>This public method writes a signed Int32 to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">Int32 to write</param>
+        /// <param name="output"><see cref="System.IO.Stream" /> to write to.</param>
+        public static void WriteInt32ToStream(Int32 datum, Stream output)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            output.Write(writeBytes, 0, writeBytes.Length);
+        }
+
+        /// <summary>This public method writes a signed Int64 to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">Int64 to write</param>
+        /// <param name="output"><see cref="System.IO.Stream" /> to write to.</param>
+        public static void WriteInt64ToStream(Int64 datum, Stream output)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            output.Write(writeBytes, 0, writeBytes.Length);
+        }
+
+        /// <summary>This public method writes a signed UInt16 to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">IntU16 to write</param>
+        /// <param name="output"><see cref="System.IO.Stream" /> to write to.</param>
+        public static void WriteUInt16ToStream(UInt16 datum, Stream output)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            output.Write(writeBytes, 0, writeBytes.Length);
+        }
+
+        /// <summary>This public method writes a signed UInt32 to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">UInt32 to write</param>
+        /// <param name="output"><see cref="System.IO.Stream" /> to write to.</param>
+        public static void WriteUInt32ToStream(UInt32 datum, Stream output)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            output.Write(writeBytes, 0, writeBytes.Length);
+        }
+
+        /// <summary>This public method writes a signed UInt64 to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">UInt64 to write</param>
+        /// <param name="output"><see cref="System.IO.Stream" /> to write to.</param>
+        public static void WriteUInt64ToStream(UInt64 datum, Stream output)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            output.Write(writeBytes, 0, writeBytes.Length);
+        }
+        #endregion
+
+        #region File IO
         /// <summary>This public method returns a FileStream from a given FilePath</summary>
         /// <param name="FilePath">String indicating the path of the file to open</param>
         /// <returns>A FileStream object</returns>
@@ -191,6 +314,7 @@ namespace InfinityPlus1.ReusableCode
             else if (DataStream.Position != SeekPosition && !DataStream.CanSeek)
                 throw new InvalidOperationException("Stream cannot seek and position is not correct.");
         }
+        #endregion
 
         #region Private Helper Methods
         /// <summary>
@@ -201,7 +325,7 @@ namespace InfinityPlus1.ReusableCode
         /// <param name="Length">The length of binary data to be extracted</param>
         /// <param name="Offset">The offset within the source array to start reading at</param>
         /// <returns>a Byte array containing the extracted data</returns>
-        private static Byte[] ReadVariableFromArray(ref Byte[] Source, Int32 Length, Int32 Offset)
+        private static Byte[] ReadVariableFromArray(Byte[] Source, Int32 Length, Int32 Offset)
         {
             Byte[] buffer = new Byte[Length];
             Array.Copy(Source, Offset, buffer, 0, Length);
