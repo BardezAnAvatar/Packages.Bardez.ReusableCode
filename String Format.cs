@@ -24,7 +24,7 @@ namespace Bardez.Projects.ReusableCode
         /// <summary>Outputs the byte array to screen as a string of hexidecimal characters for each byte</summary>
         /// <param name="data">Byte array to print</param>
         /// <returns>A String intended for print to console.</returns>
-        public static String ReservedToStringHex(Byte[] data)
+        public static String ByteArrayToHexString(Byte[] data)
         {
             StringBuilder hexData = new StringBuilder();
 
@@ -62,7 +62,7 @@ namespace Bardez.Projects.ReusableCode
             for (Int32 i = 0; i < tabs; ++i)
                 indent.Append("\t");
 
-            return indent.ToString() + String.Format("{0:44}", descriptor + ":");
+            return indent.ToString() + String.Format("{0, -48}", descriptor + ":");
         }
     }
 }
