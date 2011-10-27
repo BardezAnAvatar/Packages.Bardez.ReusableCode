@@ -31,7 +31,7 @@ namespace Bardez.Projects.ReusableCode
             //read repeatedly from the stream. this accounts for reading that stops before eof, if the stream is buffered by a slow drive of network, etc.
             while (remainingLength > 0L)
             {
-                //Stream read cannot use a long, so shorten it as/if necessary
+                //Stream.Read cannot take anything larger than an Int32; no UInt32 or any Int64, so shorten it as/if necessary
                 Int32 readSize = remainingLength > Int32.MaxValue ? Int32.MaxValue : Convert.ToInt32(remainingLength);
 
                 //do the read
@@ -307,7 +307,7 @@ namespace Bardez.Projects.ReusableCode
         /// <param name="SeekPosition">Target position of the stream</param>
         /// <param name="SeekOrientation">SeekOrigin enumerator for where in the Stream to seek from</param>
         /// <remarks>This does not yet properly support any seek operation other than Begin</remarks>
-        public static void SeekIfAble(Stream DataStream, Int64 SeekPosition, SeekOrigin SeekOrientation)
+        public static void SeekIfAble(Stream DataStream, Int64 SeekPosition, SeekOrigin SeekOrientation = SeekOrigin.Begin)
         {
             if (DataStream.Position != SeekPosition && DataStream.CanSeek)
                 DataStream.Seek(Convert.ToInt64(SeekPosition), SeekOrientation);
