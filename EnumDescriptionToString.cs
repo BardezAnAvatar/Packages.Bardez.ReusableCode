@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Bardez.Projects.InfinityPlus1.Files.Infinity.Common.Enums
+namespace Bardez.Projects.ReusableCode
 {
     /// <summary>Enumerator extension method static class</summary>
     public static class EnumDescriptionToString
