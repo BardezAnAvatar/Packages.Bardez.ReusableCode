@@ -38,6 +38,8 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bit Stream.cs" />
+    <Compile Include="EnumDescriptionToString.cs" />
     <Compile Include="FileIO.cs" />
     <Compile Include="GenericOrderedDictionary.cs" />
     <Compile Include="Int32Extension.cs" />
