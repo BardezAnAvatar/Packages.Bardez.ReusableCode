@@ -47,7 +47,7 @@ namespace Bardez.Projects.ReusableCode
         /// <returns>the formatted string, with a leading newline and tab</returns>
         public static String ToStringAlignment(String descriptor)
         {
-            return ToStringAlignment(descriptor, 1);
+            return StringFormat.ToStringAlignment(descriptor, 1);
         }
 
         /// <summary>Formats the string to be indented to a uniform length</summary>
