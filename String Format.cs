@@ -57,7 +57,7 @@ namespace Bardez.Projects.ReusableCode
         public static String ToStringAlignment(String descriptor, Int32 tabs)
         {
             StringBuilder indent = new StringBuilder();
-            indent.Append("\n");
+            indent.Append("\r\n");
 
             for (Int32 i = 0; i < tabs; ++i)
                 indent.Append("\t");
