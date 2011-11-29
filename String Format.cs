@@ -15,10 +15,7 @@ namespace Bardez.Projects.ReusableCode
         public static void AppendSubItem(StringBuilder sb, Boolean condition, String append)
         {
             if (condition)
-            {
-                sb.Append("\n\t\t");
-                sb.Append(append);
-            }
+                StringFormat.ToStringAlignment(append, 2);
         }
 
         /// <summary>Outputs the byte array to screen as a string of hexidecimal characters for each byte</summary>
@@ -30,11 +27,8 @@ namespace Bardez.Projects.ReusableCode
 
             for (Int32 i = 0; i < data.Length; ++i)
             {
-                //Int32 positionEnd = (((i + 1) * 3) % 64);
-                //if (positionEnd > 1 && positionEnd < 5)
-                //    hexData.Append("\n\t\t");
                 if (i % 21 == 0)
-                    hexData.Append("\n\t\t");
+                    hexData.Append("\r\n\t\t");
 
                 hexData.Append(String.Format("{0:X2} ", data[i]));
             }
@@ -56,13 +50,24 @@ namespace Bardez.Projects.ReusableCode
         /// <returns>the formatted string, with a leading newline and tab</returns>
         public static String ToStringAlignment(String descriptor, Int32 tabs)
         {
+            return StringFormat.ReturnAndIndent(String.Format("{0, -48}", descriptor + ":"), tabs);
+        }
+        
+        /// <summary>Formats the string to be indented with a leading neline and specified number of tabs</summary>
+        /// <param name="descriptor">String to be aligned</param>
+        /// <param name="tabs">Number of leading abs in the indented descriptor</param>
+        /// <returns>The formatted string, with a leading newline and tab</returns>
+        public static String ReturnAndIndent(String value, Int32 tabs)
+        {
             StringBuilder indent = new StringBuilder();
             indent.Append("\r\n");
 
             for (Int32 i = 0; i < tabs; ++i)
                 indent.Append("\t");
 
-            return indent.ToString() + String.Format("{0, -48}", descriptor + ":");
+            indent.Append(value);
+
+            return indent.ToString();
         }
     }
 }
