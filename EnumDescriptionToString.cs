@@ -13,7 +13,7 @@ namespace Bardez.Projects.ReusableCode
         {
             String description = null;
             
-            object[] attributes = me.GetType().GetField(me.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
+            Object[] attributes = me.GetType().GetField(me.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
 
             if (attributes != null && attributes.Length > 0)
                 description = (attributes[0] as DescriptionAttribute).Description;
