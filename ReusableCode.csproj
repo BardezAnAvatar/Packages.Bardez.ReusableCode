@@ -12,14 +12,10 @@
     <AssemblyName>ReusableCode</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,7 +40,7 @@
   <ItemGroup>
     <Compile Include="Bit Stream.cs" />
     <Compile Include="EnumDescriptionToString.cs" />
-    <Compile Include="FileIO.cs" />
+    <Compile Include="Reusable IO.cs" />
     <Compile Include="GenericOrderedDictionary.cs" />
     <Compile Include="Int32Extension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
