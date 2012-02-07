@@ -16,7 +16,7 @@ namespace Bardez.Projects.ReusableCode
     /// <remarks>This code asumes reading values saved from little-endianness unless the input is othewise specified.</remarks>
     public static class ReusableIO
     {
-        /// <summary>This public method reads</summary>
+        /// <summary>This public method reads a specified number of Bytes from the input Stream</summary>
         /// <param name="input">Stream to read from</param>
         /// <param name="readLength">Length of binary data to read</param>
         /// <returns>a Byte array containing the read data</returns>
@@ -25,7 +25,7 @@ namespace Bardez.Projects.ReusableCode
             return BinaryRead(input, Convert.ToInt64(readLength));
         }
 
-        /// <summary>This public method reads</summary>
+        /// <summary>This public method reads a specified number of Bytes from the input Stream</summary>
         /// <param name="input">Stream to read from</param>
         /// <param name="readLength">Length of binary data to read</param>
         /// <returns>a Byte array containing the read data</returns>
@@ -46,13 +46,25 @@ namespace Bardez.Projects.ReusableCode
 
                 //if there was a problem with the read
                 if (readCount < 1)
-                    throw new EndOfStreamException(String.Format("End of string reached with {0} bytes left to read", remainingLength));
+                    throw new EndOfStreamException(String.Format("End of stream reached with {0} bytes left to read", remainingLength));
 
                 remainingLength -= readCount;
                 offset += readCount;
             }
 
             return returnArr;
+        }
+
+        /// <summary>This public method reads a single Byte from the input Stream</summary>
+        /// <param name="input">Stream to read from</param>
+        /// <returns>a Byte containing the read value</returns>
+        public static Byte BinaryReadByte(Stream input)
+        {
+            Int32 value = input.ReadByte();
+            if (value < 0)
+                throw new EndOfStreamException("Could not read the next Byte.");
+
+            return Convert.ToByte(value); ;
         }
 
         #region Read ... From Byte Array
