@@ -69,22 +69,22 @@ namespace Bardez.Projects.ReusableCode
 
         #region Read ... From Byte Array
         /// <summary>This public method reads an Int16 from the source array</summary>
-        /// <param name="Source">The source array to read from</param>
-        /// <param name="Offset">The offset within the source array to read from</param>
+        /// <param name="source">The source array to read from</param>
+        /// <param name="offset">The offset within the source array to read from</param>
         /// <returns>The Int16 read from the array</returns>
-        public static Int16 ReadInt16FromArray(Byte[] Source, Int32 Offset)
+        public static Int16 ReadInt16FromArray(Byte[] source, Int64 offset)
         {
-            Byte[] buffer = ReadVariableFromArray(Source, 2, Offset);
+            Byte[] buffer = ReusableIO.ReadVariableFromArray(source, 2, offset);
             return BitConverter.ToInt16(buffer, 0);
         }
 
         /// <summary>This public method reads an unsigned Int16 from the source array</summary>
-        /// <param name="Source">The source array to read from</param>
-        /// <param name="Offset">The offset within the source array to read from</param>
+        /// <param name="source">The source array to read from</param>
+        /// <param name="offset">The offset within the source array to read from</param>
         /// <returns>The UInt16 read from the array</returns>
-        public static UInt16 ReadUInt16FromArray(Byte[] Source, Int32 Offset)
+        public static UInt16 ReadUInt16FromArray(Byte[] source, Int64 offset)
         {
-            Byte[] buffer = ReadVariableFromArray(Source, 2, Offset);
+            Byte[] buffer = ReusableIO.ReadVariableFromArray(source, 2, offset);
             return BitConverter.ToUInt16(buffer, 0);
         }
 
@@ -94,7 +94,7 @@ namespace Bardez.Projects.ReusableCode
         /// <returns>The Int32 read from the array</returns>
         public static Int32 ReadInt32FromArray(Byte[] Source, Int32 Offset)
         {
-            Byte[] buffer = ReadVariableFromArray(Source, 4, Offset);
+            Byte[] buffer = ReusableIO.ReadVariableFromArray(Source, 4, Offset);
             return BitConverter.ToInt32(buffer, 0);
         }
 
@@ -104,7 +104,7 @@ namespace Bardez.Projects.ReusableCode
         /// <returns>The UInt32 read from the array</returns>
         public static UInt32 ReadUInt32FromArray(Byte[] Source, Int32 Offset)
         {
-            Byte[] buffer = ReadVariableFromArray(Source, 4, Offset);
+            Byte[] buffer = ReusableIO.ReadVariableFromArray(Source, 4, Offset);
             return BitConverter.ToUInt32(buffer, 0);
         }
 
@@ -114,7 +114,7 @@ namespace Bardez.Projects.ReusableCode
         /// <returns>The Int64 read from the array</returns>
         public static Int64 ReadInt64FromArray(Byte[] Source, Int32 Offset)
         {
-            Byte[] buffer = ReadVariableFromArray(Source, 8, Offset);
+            Byte[] buffer = ReusableIO.ReadVariableFromArray(Source, 8, Offset);
             return BitConverter.ToInt64(buffer, 0);
         }
 
@@ -124,7 +124,7 @@ namespace Bardez.Projects.ReusableCode
         /// <returns>The UInt64 read from the array</returns>
         public static UInt64 ReadUInt64FromArray(Byte[] Source, Int32 Offset)
         {
-            Byte[] buffer = ReadVariableFromArray(Source, 8, Offset);
+            Byte[] buffer = ReusableIO.ReadVariableFromArray(Source, 8, Offset);
             return BitConverter.ToUInt64(buffer, 0);
         }
 
@@ -136,7 +136,7 @@ namespace Bardez.Projects.ReusableCode
         /// <returns>The Int16 read from the array</returns>
         public static Int16 ReadInt16FromArray(Byte[] Source, Int32 Offset, Endianness endianness)
         {
-            Byte[] buffer = ReadVariableFromArray(Source, 2, Offset, endianness);
+            Byte[] buffer = ReusableIO.ReadVariableFromArray(Source, 2, Offset, endianness);
             return BitConverter.ToInt16(buffer, 0);
         }
 
@@ -213,12 +213,13 @@ namespace Bardez.Projects.ReusableCode
         }
         #endregion
 
-        #region Write String to Byte Array
+
+        #region Generate String's Byte Array
         /// <summary>This public method writes a string to a byte array of an ASCII-encoding</summary>
         /// <param name="Source">String to write</param>
         /// <param name="cultureRef">String describing the culture info for ASCII encoding</param>
         /// <returns>A Byte array containing the bytes of the string</returns>
-        public static Byte[] WriteStringToByteArray(String Source, String CultureRef)
+        public static Byte[] GetStringByteArray(String Source, String CultureRef)
         {
             CultureInfo culture = new CultureInfo(CultureRef);
             Encoding encoding = Encoding.GetEncoding(culture.TextInfo.ANSICodePage);
@@ -231,7 +232,7 @@ namespace Bardez.Projects.ReusableCode
         /// <param name="cultureRef">String describing the culture info for ASCII encoding</param>
         /// <param name="Length">Optional parameter indicating the length of the byte array to return. The default value is 8, for resource references.</param>
         /// <returns>A Byte array containing the bytes of the string</returns>
-        public static Byte[] WriteStringToByteArray(String Source, String CultureRef, Int32 Length = 8)
+        public static Byte[] GetStringByteArray(String Source, String CultureRef, Int32 Length = 8)
         {
             //The return array
             Byte[] returnArray = new Byte[Length];
@@ -251,7 +252,7 @@ namespace Bardez.Projects.ReusableCode
         /// <param name="Source">String to write</param>
         /// <param name="Length">Optional parameter indicating the length of the byte array to return. The default value is 8, for resource references.</param>
         /// <returns>A Byte array containing the bytes of the string</returns>
-        public static Byte[] WriteStringToByteArray(String Source, Int32 Length = 8)
+        public static Byte[] GetStringByteArray(String Source, Int32 Length = 8)
         {
             //The return array
             Byte[] returnArray = new Byte[Length];
@@ -267,7 +268,172 @@ namespace Bardez.Projects.ReusableCode
         }
         #endregion
 
-        #region Write primitive to Steam
+
+        #region Write primitive to Byte Array
+        /// <summary>This public method writes a string to a byte array of an ASCII-encoding</summary>
+        /// <param name="source">String to write</param>
+        /// <param name="output"><see cref="System.Array" /> to write to.</param>
+        /// <param name="position">Position of the output array to write to</param>
+        /// <param name="cultureRef">String describing the culture info for ASCII encoding</param>
+        /// <param name="entireString">Boolean indicating whether or not to write the full String binary contents</param>
+        /// <param name="requiredLength">Length of the character array being written to. -1 means full string, default = 8</param>
+        /// <returns>A Byte array containing the bytes of the string</returns>
+        public static void WriteStringToArray(String source, Byte[] output, Int64 position, String cultureRef, Boolean entireString = false, Int32 requiredLength = 8)
+        {
+            CultureInfo culture = new CultureInfo(cultureRef);
+            Encoding encoding = Encoding.GetEncoding(culture.TextInfo.ANSICodePage);
+
+            Byte[] temp;
+            if (entireString)
+                temp = encoding.GetBytes(source ?? String.Empty);
+            else
+            {
+                temp = new Byte[requiredLength];
+                Byte[] temp2 = encoding.GetBytes(source ?? String.Empty);
+                Int32 length = temp2.Length > temp.Length ? temp.Length : temp2.Length;
+                Array.Copy(temp2, temp, length);
+            }
+
+            ReusableIO.WriteVariableToArray(output, position, temp);
+        }
+
+        /// <summary>This public method writes a signed byte to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">SByte to write</param>
+        /// <param name="output"><see cref="System.Array" /> to write to.</param>
+        /// <param name="position">Position of the output array to write to</param>
+        public static void WriteSByteToArray(SByte datum, Byte[] output, Int64 position)
+        {
+            output[position] = (Byte)datum;
+        }
+
+        /// <summary>This public method writes a signed Int16 to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">Int16 to write</param>
+        /// <param name="output"><see cref="System.Array" /> to write to.</param>
+        /// <param name="position">Position of the output array to write to</param>
+        public static void WriteInt16ToArray(Int16 datum, Byte[] output, Int64 position)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            ReusableIO.WriteVariableToArray(output, position, writeBytes);
+        }
+
+        /// <summary>This public method writes a signed Int16 to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">Int16 to write</param>
+        /// <param name="output"><see cref="System.IO.Stream" /> to write to.</param>
+        /// <param name="endianness">The desired endianness to be written</param>
+        public static void WriteInt16ToArray(Int16 datum, Byte[] output, Int64 position, Endianness endianness)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            ReusableIO.WriteVariableToArray(output, position, writeBytes, endianness);
+        }
+
+        /// <summary>This public method writes a signed Int32 to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">Int32 to write</param>
+        /// <param name="output"><see cref="System.Array" /> to write to.</param>
+        /// <param name="position">Position of the output array to write to</param>
+        public static void WriteInt32ToArray(Int32 datum, Byte[] output, Int64 position)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            ReusableIO.WriteVariableToArray(output, position, writeBytes);
+        }
+
+        /// <summary>This public method writes a signed Int32 to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">Int32 to write</param>
+        /// <param name="output"><see cref="System.Array" /> to write to.</param>
+        /// <param name="position">Position of the output array to write to</param>
+        /// <param name="endianness">The desired endianness to be written</param>
+        public static void WriteInt32ToArray(Int32 datum, Byte[] output, Int64 position, Endianness endianness)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            ReusableIO.WriteVariableToArray(output, position, writeBytes, endianness);
+        }
+
+        /// <summary>This public method writes a signed Int64 to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">Int64 to write</param>
+        /// <param name="output"><see cref="System.Array" /> to write to.</param>
+        /// <param name="position">Position of the output array to write to</param>
+        public static void WriteInt64ToArray(Int64 datum, Byte[] output, Int64 position)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            ReusableIO.WriteVariableToArray(output, position, writeBytes);
+        }
+
+        /// <summary>This public method writes a signed Int64 to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">Int64 to write</param>
+        /// <param name="output"><see cref="System.Array" /> to write to.</param>
+        /// <param name="position">Position of the output array to write to</param>
+        /// <param name="endianness">The desired endianness to be written</param>
+        public static void WriteInt64ToArray(Int64 datum, Byte[] output, Int64 position, Endianness endianness)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            ReusableIO.WriteVariableToArray(output, position, writeBytes, endianness);
+        }
+
+        /// <summary>This public method writes a signed UInt16 to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">IntU16 to write</param>
+        /// <param name="output"><see cref="System.Array" /> to write to.</param>
+        /// <param name="position">Position of the output array to write to</param>
+        public static void WriteUInt16ToArray(UInt16 datum, Byte[] output, Int64 position)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            ReusableIO.WriteVariableToArray(output, position, writeBytes);
+        }
+
+        /// <summary>This public method writes a signed UInt16 to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">IntU16 to write</param>
+        /// <param name="output"><see cref="System.Array" /> to write to.</param>
+        /// <param name="position">Position of the output array to write to</param>
+        /// <param name="endianness">The desired endianness to be written</param>
+        public static void WriteUInt16ToArray(UInt16 datum, Byte[] output, Int64 position, Endianness endianness)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            ReusableIO.WriteVariableToArray(output, position, writeBytes, endianness);
+        }
+
+        /// <summary>This public method writes a signed UInt32 to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">UInt32 to write</param>
+        /// <param name="output"><see cref="System.Array" /> to write to.</param>
+        /// <param name="position">Position of the output array to write to</param>
+        public static void WriteUInt32ToArray(UInt32 datum, Byte[] output, Int64 position)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            ReusableIO.WriteVariableToArray(output, position, writeBytes);
+        }
+
+        /// <summary>This public method writes a signed UInt32 to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">UInt32 to write</param>
+        /// <param name="output"><see cref="System.Array" /> to write to.</param>
+        /// <param name="position">Position of the output array to write to</param>
+        /// <param name="endianness">The desired endianness to be written</param>
+        public static void WriteUInt32ToArray(UInt32 datum, Byte[] output, Int64 position, Endianness endianness)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            ReusableIO.WriteVariableToArray(output, position, writeBytes, endianness);
+        }
+
+        /// <summary>This public method writes a signed UInt64 to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">UInt64 to write</param>
+        /// <param name="output"><see cref="System.Array" /> to write to.</param>
+        /// <param name="position">Position of the output array to write to</param>
+        public static void WriteUInt64ToArray(UInt64 datum, Byte[] output, Int64 position)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            ReusableIO.WriteVariableToArray(output, position, writeBytes);
+        }
+
+        /// <summary>This public method writes a signed UInt64 to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">UInt64 to write</param>
+        /// <param name="output"><see cref="System.Array" /> to write to.</param>
+        /// <param name="position">Position of the output array to write to</param>
+        /// <param name="endianness">The desired endianness to be written</param>
+        public static void WriteUInt64ToArray(UInt64 datum, Byte[] output, Int64 position, Endianness endianness)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            ReusableIO.WriteVariableToArray(output, position, writeBytes, endianness);
+        }
+        #endregion
+
+
+        #region Write primitive to Stream
         /// <summary>This public method writes a string to a byte array of an ASCII-encoding</summary>
         /// <param name="source">String to write</param>
         /// <param name="output">Stream into which to write the string</param>
@@ -417,6 +583,7 @@ namespace Bardez.Projects.ReusableCode
         }
         #endregion
 
+
         #region File IO
         /// <summary>This public method returns a FileStream from a given FilePath</summary>
         /// <param name="FilePath">String indicating the path of the file to open</param>
@@ -449,6 +616,7 @@ namespace Bardez.Projects.ReusableCode
         }
         #endregion
 
+
         /// <summary>This public method seeks the data stream to an appropriate position if the stream is not currently positioned there.</summary>
         /// <param name="DataStream">Stream that needs to seek</param>
         /// <param name="SeekPosition">Target position of the stream</param>
@@ -462,19 +630,20 @@ namespace Bardez.Projects.ReusableCode
                 throw new InvalidOperationException("Stream cannot seek and position is not correct.");
         }
 
+
         #region Private Helper Methods
         /// <summary>
         ///     This private method will read binary data of a given length from an array and return that sub-array.
         ///     If the system is Big-Endian, the resultant array will be flipped.
         /// </summary>
-        /// <param name="Source">The original data array</param>
-        /// <param name="Length">The length of binary data to be extracted</param>
-        /// <param name="Offset">The offset within the source array to start reading at</param>
+        /// <param name="source">The original data array</param>
+        /// <param name="length">The length of binary data to be extracted</param>
+        /// <param name="offset">The offset within the source array to start reading at</param>
         /// <returns>a Byte array containing the extracted data</returns>
-        private static Byte[] ReadVariableFromArray(Byte[] Source, Int32 Length, Int32 Offset)
+        private static Byte[] ReadVariableFromArray(Byte[] source, Int32 length, Int64 offset)
         {
-            Byte[] buffer = new Byte[Length];
-            Array.Copy(Source, Offset, buffer, 0, Length);
+            Byte[] buffer = new Byte[length];
+            Array.Copy(source, offset, buffer, 0, length);
 
             //This is stupid, but I am eyeing the iPhone... it makes me *aware* of such issues.
             if (!BitConverter.IsLittleEndian)
@@ -520,6 +689,44 @@ namespace Bardez.Projects.ReusableCode
                 Array.Reverse(data);
 
             output.Write(data, 0, data.Length);
+        }
+
+        /// <summary>
+        ///     This private method will write binary data to an output binary array
+        ///     If the endianness does match that of the current system, the source array will be flipped.
+        /// </summary>
+        /// <param name="output"><see cref="System.Array" /> to write to.</param>
+        /// <param name="position">Position of the output array to write to</param>
+        /// <param name="data">The original data array</param>
+        private static void WriteVariableToArray(Byte[] output, Int64 position, Byte[] data)
+        {
+            //This is stupid, but I am eyeing the iPhone... it makes me *aware* of such issues.
+            if (!BitConverter.IsLittleEndian)
+                Array.Reverse(data);
+
+            Int32 len = data.Length;
+            for (Int32 i = 0; i < len; ++i)
+                output[position + i] = data[i];
+        }
+
+        /// <summary>
+        ///     This private method will write binary data to an output binary array
+        ///     If the endianness does match that of the current system, the source array will be flipped.
+        /// </summary>
+        /// <param name="output"><see cref="System.Array" /> to write to.</param>
+        /// <param name="position">Position of the output array to write to</param>
+        /// <param name="data">The original data array</param>
+        /// <param name="endianness">The desired endianness to be written</param>
+        /// <remarks>This is so heavily hit that I want to avoid usage unless I really need it</remarks>
+        private static void WriteVariableToArray(Byte[] output, Int64 position, Byte[] data, Endianness endianness)
+        {
+            //if the current endianness does not match the desired endianness
+            if (BitConverter.IsLittleEndian != (endianness == Endianness.LittleEndian))
+                Array.Reverse(data);
+
+            Int32 len = data.Length;
+            for (Int32 i = 0; i < len; ++i)
+                output[position + i] = data[i];
         }
         #endregion
     }
