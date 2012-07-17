@@ -78,6 +78,7 @@
     <Compile Include="GenericOrderedDictionary.cs" />
     <Compile Include="Int32Extension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Memory Stream Extension.cs" />
     <Compile Include="String Format.cs" />
     <Compile Include="SubStream.cs" />
   </ItemGroup>
