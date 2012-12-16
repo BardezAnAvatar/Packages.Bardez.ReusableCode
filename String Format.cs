@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Text;
 
 namespace Bardez.Projects.ReusableCode
@@ -46,16 +47,16 @@ namespace Bardez.Projects.ReusableCode
 
         /// <summary>Formats the string to be indented to a uniform length</summary>
         /// <param name="descriptor">String to be aligned</param>
-        /// <param name="tabs">Number of leading abs in the indented descriptor</param>
+        /// <param name="tabs">Number of leading tabs in the indented descriptor</param>
         /// <returns>the formatted string, with a leading newline and tab</returns>
         public static String ToStringAlignment(String descriptor, Int32 tabs)
         {
             return StringFormat.ReturnAndIndent(String.Format("{0, -48}", descriptor + ":"), tabs);
         }
         
-        /// <summary>Formats the string to be indented with a leading neline and specified number of tabs</summary>
+        /// <summary>Formats the string to be indented with a leading newline and specified number of tabs</summary>
         /// <param name="descriptor">String to be aligned</param>
-        /// <param name="tabs">Number of leading abs in the indented descriptor</param>
+        /// <param name="tabs">Number of leading tabs in the indented descriptor</param>
         /// <returns>The formatted string, with a leading newline and tab</returns>
         public static String ReturnAndIndent(String value, Int32 tabs)
         {
@@ -66,6 +67,23 @@ namespace Bardez.Projects.ReusableCode
                 indent.Append("\t");
 
             indent.Append(value);
+
+            return indent.ToString();
+        }
+
+        /// <summary>Formats the string such that all lines in the string passed in have a given number of leading tabs</summary>
+        /// <param name="source">Source String to be aligned</param>
+        /// <param name="tabCount">Number of leading tabs in the indented descriptor</param>
+        /// <returns>The formatted string, with a leading tabs</returns>
+        public static String IndentAllLines(String source, Int32 tabCount)
+        {
+            StringBuilder indent = new StringBuilder();
+            using (StringReader reader = new StringReader(source))
+            {
+                String line = null;
+                while ((line = reader.ReadLine()) != null)
+                    indent.Append(StringFormat.ReturnAndIndent(line, tabCount));
+            }
 
             return indent.ToString();
         }
