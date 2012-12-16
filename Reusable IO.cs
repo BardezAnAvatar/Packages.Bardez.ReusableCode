@@ -16,6 +16,7 @@ namespace Bardez.Projects.ReusableCode
     /// <remarks>This code asumes reading values saved from little-endianness unless the input is othewise specified.</remarks>
     public static class ReusableIO
     {
+        #region Basic Stream reading
         /// <summary>This public method reads a specified number of Bytes from the input Stream</summary>
         /// <param name="input">Stream to read from</param>
         /// <param name="readLength">Length of binary data to read</param>
@@ -66,6 +67,21 @@ namespace Bardez.Projects.ReusableCode
 
             return Convert.ToByte(value); ;
         }
+
+        /// <summary>This public method seeks the data stream to an appropriate position if the stream is not currently positioned there.</summary>
+        /// <param name="DataStream">Stream that needs to seek</param>
+        /// <param name="SeekPosition">Target position of the stream</param>
+        /// <param name="SeekOrientation">SeekOrigin enumerator for where in the Stream to seek from</param>
+        /// <remarks>This does not yet properly support any seek operation other than Begin</remarks>
+        public static void SeekIfAble(Stream DataStream, Int64 SeekPosition, SeekOrigin SeekOrientation = SeekOrigin.Begin)
+        {
+            if (DataStream.Position != SeekPosition && DataStream.CanSeek)
+                DataStream.Seek(Convert.ToInt64(SeekPosition), SeekOrientation);
+            else if (DataStream.Position != SeekPosition && !DataStream.CanSeek)
+                throw new InvalidOperationException("Stream cannot seek and position is not correct.");
+        }
+        #endregion
+
 
         #region Read ... From Byte Array
         /// <summary>This public method reads an Int16 from the source array</summary>
@@ -202,7 +218,7 @@ namespace Bardez.Projects.ReusableCode
         /// <param name="cultureRef">String describing the culture info for ASCII encoding</param>
         /// <param name="Length">Optional parameter indicating the length of the string to read. The default value is 8, for resource references.</param>
         /// <returns>The string read from the byte array</returns>
-        public static String ReadStringFromByteArray(Byte[] Source, Int32 Offset, String CultureRef, Int32 Length = 8)
+        public static String ReadStringFromByteArray(Byte[] Source, Int64 Offset, String CultureRef, Int64 Length = 8)
         {
             Byte[] temp = new Byte[Length];
             Array.Copy(Source, Offset, temp, 0, Length);
@@ -210,6 +226,129 @@ namespace Bardez.Projects.ReusableCode
             CultureInfo culture = new CultureInfo(CultureRef);
             Encoding encoding = Encoding.GetEncoding(culture.TextInfo.ANSICodePage);
             return encoding.GetString(temp);
+        }
+        #endregion
+
+
+        #region Read ... From Stream
+        /// <summary>This public method reads an Int16 from the source Stream</summary>
+        /// <param name="source">The source array to read from</param>
+        /// <param name="endianness">The desired endianness to be read</param>
+        /// <returns>The Int16 read from the Stream</returns>
+        public static Int16 ReadInt16FromStream(Stream source, Endianness endianness)
+        {
+            Byte[] bin = ReusableIO.BinaryRead(source, 2);
+            return ReusableIO.ReadInt16FromArray(bin, 0, endianness);
+        }
+
+        /// <summary>This public method reads an Int16 from the source Stream</summary>
+        /// <param name="source">The source array to read from</param>
+        /// <param name="endianness">The desired endianness to be read</param>
+        /// <returns>The Int16 read from the Stream</returns>
+        public static Int16 ReadInt16FromStream(Stream source)
+        {
+            Byte[] bin = ReusableIO.BinaryRead(source, 2);
+            return ReusableIO.ReadInt16FromArray(bin, 0);
+        }
+
+        /// <summary>This public method reads an UInt16 from the source Stream</summary>
+        /// <param name="source">The source array to read from</param>
+        /// <param name="endianness">The desired endianness to be read</param>
+        /// <returns>The UInt16 read from the Stream</returns>
+        public static UInt16 ReadUInt16FromStream(Stream source, Endianness endianness)
+        {
+            Byte[] bin = ReusableIO.BinaryRead(source, 2);
+            return ReusableIO.ReadUInt16FromArray(bin, 0, endianness);
+        }
+
+        /// <summary>This public method reads an UInt16 from the source Stream</summary>
+        /// <param name="source">The source array to read from</param>
+        /// <param name="endianness">The desired endianness to be read</param>
+        /// <returns>The UInt16 read from the Stream</returns>
+        public static UInt16 ReadUInt16FromStream(Stream source)
+        {
+            Byte[] bin = ReusableIO.BinaryRead(source, 2);
+            return ReusableIO.ReadUInt16FromArray(bin, 0);
+        }
+
+        /// <summary>This public method reads an Int32 from the source Stream</summary>
+        /// <param name="source">The source array to read from</param>
+        /// <param name="endianness">The desired endianness to be read</param>
+        /// <returns>The Int32 read from the Stream</returns>
+        public static Int32 ReadInt32FromStream(Stream source, Endianness endianness)
+        {
+            Byte[] bin = ReusableIO.BinaryRead(source, 4);
+            return ReusableIO.ReadInt32FromArray(bin, 0, endianness);
+        }
+
+        /// <summary>This public method reads an Int32 from the source Stream</summary>
+        /// <param name="source">The source array to read from</param>
+        /// <param name="endianness">The desired endianness to be read</param>
+        /// <returns>The Int32 read from the Stream</returns>
+        public static Int32 ReadInt32FromStream(Stream source)
+        {
+            Byte[] bin = ReusableIO.BinaryRead(source, 4);
+            return ReusableIO.ReadInt32FromArray(bin, 0);
+        }
+
+        /// <summary>This public method reads an UInt32 from the source Stream</summary>
+        /// <param name="source">The source array to read from</param>
+        /// <param name="endianness">The desired endianness to be read</param>
+        /// <returns>The UInt32 read from the Stream</returns>
+        public static UInt32 ReadUInt32FromStream(Stream source, Endianness endianness)
+        {
+            Byte[] bin = ReusableIO.BinaryRead(source, 4);
+            return ReusableIO.ReadUInt32FromArray(bin, 0, endianness);
+        }
+
+        /// <summary>This public method reads an UInt32 from the source Stream</summary>
+        /// <param name="source">The source array to read from</param>
+        /// <param name="endianness">The desired endianness to be read</param>
+        /// <returns>The UInt32 read from the Stream</returns>
+        public static UInt32 ReadUInt32FromStream(Stream source)
+        {
+            Byte[] bin = ReusableIO.BinaryRead(source, 4);
+            return ReusableIO.ReadUInt32FromArray(bin, 0);
+        }
+
+        /// <summary>This public method reads an Int64 from the source Stream</summary>
+        /// <param name="source">The source array to read from</param>
+        /// <param name="endianness">The desired endianness to be read</param>
+        /// <returns>The Int64 read from the Stream</returns>
+        public static Int64 ReadInt64FromStream(Stream source, Endianness endianness)
+        {
+            Byte[] bin = ReusableIO.BinaryRead(source, 8);
+            return ReusableIO.ReadInt64FromArray(bin, 0, endianness);
+        }
+
+        /// <summary>This public method reads an Int64 from the source Stream</summary>
+        /// <param name="source">The source array to read from</param>
+        /// <param name="endianness">The desired endianness to be read</param>
+        /// <returns>The Int64 read from the Stream</returns>
+        public static Int64 ReadInt64FromStream(Stream source)
+        {
+            Byte[] bin = ReusableIO.BinaryRead(source, 8);
+            return ReusableIO.ReadInt64FromArray(bin, 0);
+        }
+
+        /// <summary>This public method reads an UInt64 from the source Stream</summary>
+        /// <param name="source">The source array to read from</param>
+        /// <param name="endianness">The desired endianness to be read</param>
+        /// <returns>The UInt64 read from the Stream</returns>
+        public static UInt64 ReadUInt64FromStream(Stream source, Endianness endianness)
+        {
+            Byte[] bin = ReusableIO.BinaryRead(source, 8);
+            return ReusableIO.ReadUInt64FromArray(bin, 0, endianness);
+        }
+
+        /// <summary>This public method reads an UInt64 from the source Stream</summary>
+        /// <param name="source">The source array to read from</param>
+        /// <param name="endianness">The desired endianness to be read</param>
+        /// <returns>The UInt64 read from the Stream</returns>
+        public static UInt64 ReadUInt64FromStream(Stream source)
+        {
+            Byte[] bin = ReusableIO.BinaryRead(source, 8);
+            return ReusableIO.ReadUInt64FromArray(bin, 0);
         }
         #endregion
 
@@ -617,18 +756,6 @@ namespace Bardez.Projects.ReusableCode
         #endregion
 
 
-        /// <summary>This public method seeks the data stream to an appropriate position if the stream is not currently positioned there.</summary>
-        /// <param name="DataStream">Stream that needs to seek</param>
-        /// <param name="SeekPosition">Target position of the stream</param>
-        /// <param name="SeekOrientation">SeekOrigin enumerator for where in the Stream to seek from</param>
-        /// <remarks>This does not yet properly support any seek operation other than Begin</remarks>
-        public static void SeekIfAble(Stream DataStream, Int64 SeekPosition, SeekOrigin SeekOrientation = SeekOrigin.Begin)
-        {
-            if (DataStream.Position != SeekPosition && DataStream.CanSeek)
-                DataStream.Seek(Convert.ToInt64(SeekPosition), SeekOrientation);
-            else if (DataStream.Position != SeekPosition && !DataStream.CanSeek)
-                throw new InvalidOperationException("Stream cannot seek and position is not correct.");
-        }
 
 
         #region Private Helper Methods
