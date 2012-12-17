@@ -16,7 +16,7 @@ namespace Bardez.Projects.ReusableCode
         public static void AppendSubItem(StringBuilder sb, Boolean condition, String append)
         {
             if (condition)
-                StringFormat.ToStringAlignment(append, 2);
+                StringFormat.ToStringAlignment(append, 2, sb);
         }
 
         /// <summary>Outputs the byte array to screen as a string of hexidecimal characters for each byte</summary>
@@ -26,15 +26,23 @@ namespace Bardez.Projects.ReusableCode
         {
             StringBuilder hexData = new StringBuilder();
 
+            StringFormat.ByteArrayToHexString(data, hexData);
+
+            return hexData.ToString();
+        }
+
+        /// <summary>Outputs the byte array to screen as a string of hexidecimal characters for each byte</summary>
+        /// <param name="data">Byte array to print</param>
+        /// <param name="builder">StringBuilder to write to</param>
+        public static void ByteArrayToHexString(Byte[] data, StringBuilder builder)
+        {
             for (Int32 i = 0; i < data.Length; ++i)
             {
                 if (i % 21 == 0)
-                    hexData.Append("\r\n\t\t");
+                    builder.Append("\r\n\t\t");
 
-                hexData.Append(String.Format("{0:X2} ", data[i]));
+                builder.Append(String.Format("{0:X2} ", data[i]));
             }
-
-            return hexData.ToString();
         }
 
         /// <summary>Formats the string to be indented to a uniform length</summary>
@@ -47,13 +55,30 @@ namespace Bardez.Projects.ReusableCode
 
         /// <summary>Formats the string to be indented to a uniform length</summary>
         /// <param name="descriptor">String to be aligned</param>
+        /// <param name="builder">StringBuilder to write to</param>
+        public static void ToStringAlignment(String descriptor, StringBuilder builder)
+        {
+            StringFormat.ToStringAlignment(descriptor, 1, builder);
+        }
+
+        /// <summary>Formats the string to be indented to a uniform length</summary>
+        /// <param name="descriptor">String to be aligned</param>
         /// <param name="tabs">Number of leading tabs in the indented descriptor</param>
         /// <returns>the formatted string, with a leading newline and tab</returns>
         public static String ToStringAlignment(String descriptor, Int32 tabs)
         {
             return StringFormat.ReturnAndIndent(String.Format("{0, -48}", descriptor + ":"), tabs);
         }
-        
+
+        /// <summary>Formats the string to be indented to a uniform length</summary>
+        /// <param name="descriptor">String to be aligned</param>
+        /// <param name="tabs">Number of leading tabs in the indented descriptor</param>
+        /// <param name="builder">StringBuilder to write to</param>
+        public static void ToStringAlignment(String descriptor, Int32 tabs, StringBuilder builder)
+        {
+            StringFormat.ReturnAndIndent(String.Format("{0, -48}", descriptor + ":"), tabs, builder);
+        }
+
         /// <summary>Formats the string to be indented with a leading newline and specified number of tabs</summary>
         /// <param name="descriptor">String to be aligned</param>
         /// <param name="tabs">Number of leading tabs in the indented descriptor</param>
@@ -61,14 +86,24 @@ namespace Bardez.Projects.ReusableCode
         public static String ReturnAndIndent(String value, Int32 tabs)
         {
             StringBuilder indent = new StringBuilder();
-            indent.Append("\r\n");
 
-            for (Int32 i = 0; i < tabs; ++i)
-                indent.Append("\t");
-
-            indent.Append(value);
+            StringFormat.ReturnAndIndent(value, tabs, indent);
 
             return indent.ToString();
+        }
+
+        /// <summary>Formats the string to be indented with a leading newline and specified number of tabs</summary>
+        /// <param name="descriptor">String to be aligned</param>
+        /// <param name="tabs">Number of leading tabs in the indented descriptor</param>
+        /// <param name="builder">StringBuilder to write to</param>
+        public static void ReturnAndIndent(String value, Int32 tabs, StringBuilder builder)
+        {
+            builder.Append("\r\n");
+
+            for (Int32 i = 0; i < tabs; ++i)
+                builder.Append("\t");
+
+            builder.Append(value);
         }
 
         /// <summary>Formats the string such that all lines in the string passed in have a given number of leading tabs</summary>
@@ -82,10 +117,24 @@ namespace Bardez.Projects.ReusableCode
             {
                 String line = null;
                 while ((line = reader.ReadLine()) != null)
-                    indent.Append(StringFormat.ReturnAndIndent(line, tabCount));
+                    StringFormat.ReturnAndIndent(line, tabCount, indent);
             }
 
             return indent.ToString();
+        }
+
+        /// <summary>Formats the string such that all lines in the string passed in have a given number of leading tabs</summary>
+        /// <param name="source">Source String to be aligned</param>
+        /// <param name="tabCount">Number of leading tabs in the indented descriptor</param>
+        /// <returns>The formatted string, with a leading tabs</returns>
+        public static void IndentAllLines(String source, Int32 tabCount, StringBuilder builder)
+        {
+            using (StringReader reader = new StringReader(source))
+            {
+                String line = null;
+                while ((line = reader.ReadLine()) != null)
+                    StringFormat.ReturnAndIndent(line, tabCount, builder);
+            }
         }
     }
 }
