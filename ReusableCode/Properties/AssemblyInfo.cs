@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ReusableCode")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Reusable code repository for basic I/O between projects")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("SyNDiCaTEd Software")]
+[assembly: AssemblyCompany("Erik \"Bardez\" Frantz")]
 [assembly: AssemblyProduct("ReusableCode")]
-[assembly: AssemblyCopyright("Copyright © SyNDiCaTEd Software 2011")]
+[assembly: AssemblyCopyright("Copyright © Erik \"Bardez\" Frantz 2011 - 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,4 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.*")]
