@@ -144,6 +144,26 @@ namespace Bardez.Projects.ReusableCode
             return BitConverter.ToUInt64(buffer, 0);
         }
 
+        /// <summary>This public method reads a Single from the source array</summary>
+        /// <param name="Source">The source array to read from</param>
+        /// <param name="Offset">The offset within the source array to read from</param>
+        /// <returns>The Single read from the array</returns>
+        public static Single ReadSingleFromArray(Byte[] Source, Int32 Offset)
+        {
+            Byte[] buffer = ReusableIO.ReadVariableFromArray(Source, 4, Offset);
+            return BitConverter.ToSingle(buffer, 0);
+        }
+
+        /// <summary>This public method reads a Double from the source array</summary>
+        /// <param name="Source">The source array to read from</param>
+        /// <param name="Offset">The offset within the source array to read from</param>
+        /// <returns>The Double read from the array</returns>
+        public static Double ReadDoubleFromArray(Byte[] Source, Int32 Offset)
+        {
+            Byte[] buffer = ReusableIO.ReadVariableFromArray(Source, 8, Offset);
+            return BitConverter.ToDouble(buffer, 0);
+        }
+
         #region Endianness
         /// <summary>This public method reads an Int16 from the source array</summary>
         /// <param name="Source">The source array to read from</param>
@@ -209,6 +229,28 @@ namespace Bardez.Projects.ReusableCode
         {
             Byte[] buffer = ReadVariableFromArray(Source, 8, Offset, endianness);
             return BitConverter.ToUInt64(buffer, 0);
+        }
+
+        /// <summary>This public method reads a Single from the source array</summary>
+        /// <param name="Source">The source array to read from</param>
+        /// <param name="Offset">The offset within the source array to read from</param>
+        /// <param name="endianness">The desired endianness to be read</param>
+        /// <returns>The Single read from the array</returns>
+        public static Single ReadSingleFromArray(Byte[] Source, Int32 Offset, Endianness endianness)
+        {
+            Byte[] buffer = ReadVariableFromArray(Source, 4, Offset, endianness);
+            return BitConverter.ToSingle(buffer, 0);
+        }
+
+        /// <summary>This public method reads a Double from the source array</summary>
+        /// <param name="Source">The source array to read from</param>
+        /// <param name="Offset">The offset within the source array to read from</param>
+        /// <param name="endianness">The desired endianness to be read</param>
+        /// <returns>The Double read from the array</returns>
+        public static Double ReadDoubleFromArray(Byte[] Source, Int32 Offset, Endianness endianness)
+        {
+            Byte[] buffer = ReadVariableFromArray(Source, 8, Offset, endianness);
+            return BitConverter.ToDouble(buffer, 0);
         }
         #endregion
 
@@ -436,7 +478,7 @@ namespace Bardez.Projects.ReusableCode
             ReusableIO.WriteVariableToArray(output, position, temp);
         }
 
-        /// <summary>This public method writes a signed byte to an output <see cref="System.IO.Stream" /></summary>
+        /// <summary>This public method writes a signed byte to an output Byte array</summary>
         /// <param name="datum">SByte to write</param>
         /// <param name="output"><see cref="System.Array" /> to write to.</param>
         /// <param name="position">Position of the output array to write to</param>
@@ -445,7 +487,7 @@ namespace Bardez.Projects.ReusableCode
             output[position] = (Byte)datum;
         }
 
-        /// <summary>This public method writes a signed Int16 to an output <see cref="System.IO.Stream" /></summary>
+        /// <summary>This public method writes a signed Int16 to an output Byte array</summary>
         /// <param name="datum">Int16 to write</param>
         /// <param name="output"><see cref="System.Array" /> to write to.</param>
         /// <param name="position">Position of the output array to write to</param>
@@ -455,7 +497,7 @@ namespace Bardez.Projects.ReusableCode
             ReusableIO.WriteVariableToArray(output, position, writeBytes);
         }
 
-        /// <summary>This public method writes a signed Int16 to an output <see cref="System.IO.Stream" /></summary>
+        /// <summary>This public method writes a signed Int16 to an output Byte array</summary>
         /// <param name="datum">Int16 to write</param>
         /// <param name="output"><see cref="System.IO.Stream" /> to write to.</param>
         /// <param name="endianness">The desired endianness to be written</param>
@@ -465,7 +507,7 @@ namespace Bardez.Projects.ReusableCode
             ReusableIO.WriteVariableToArray(output, position, writeBytes, endianness);
         }
 
-        /// <summary>This public method writes a signed Int32 to an output <see cref="System.IO.Stream" /></summary>
+        /// <summary>This public method writes a signed Int32 to an output Byte array</summary>
         /// <param name="datum">Int32 to write</param>
         /// <param name="output"><see cref="System.Array" /> to write to.</param>
         /// <param name="position">Position of the output array to write to</param>
@@ -475,7 +517,7 @@ namespace Bardez.Projects.ReusableCode
             ReusableIO.WriteVariableToArray(output, position, writeBytes);
         }
 
-        /// <summary>This public method writes a signed Int32 to an output <see cref="System.IO.Stream" /></summary>
+        /// <summary>This public method writes a signed Int32 to an output Byte array</summary>
         /// <param name="datum">Int32 to write</param>
         /// <param name="output"><see cref="System.Array" /> to write to.</param>
         /// <param name="position">Position of the output array to write to</param>
@@ -486,7 +528,7 @@ namespace Bardez.Projects.ReusableCode
             ReusableIO.WriteVariableToArray(output, position, writeBytes, endianness);
         }
 
-        /// <summary>This public method writes a signed Int64 to an output <see cref="System.IO.Stream" /></summary>
+        /// <summary>This public method writes a signed Int64 to an output Byte array</summary>
         /// <param name="datum">Int64 to write</param>
         /// <param name="output"><see cref="System.Array" /> to write to.</param>
         /// <param name="position">Position of the output array to write to</param>
@@ -496,7 +538,7 @@ namespace Bardez.Projects.ReusableCode
             ReusableIO.WriteVariableToArray(output, position, writeBytes);
         }
 
-        /// <summary>This public method writes a signed Int64 to an output <see cref="System.IO.Stream" /></summary>
+        /// <summary>This public method writes a signed Int64 to an output Byte array</summary>
         /// <param name="datum">Int64 to write</param>
         /// <param name="output"><see cref="System.Array" /> to write to.</param>
         /// <param name="position">Position of the output array to write to</param>
@@ -507,7 +549,7 @@ namespace Bardez.Projects.ReusableCode
             ReusableIO.WriteVariableToArray(output, position, writeBytes, endianness);
         }
 
-        /// <summary>This public method writes a signed UInt16 to an output <see cref="System.IO.Stream" /></summary>
+        /// <summary>This public method writes an unsigned UInt16 to an output Byte array</summary>
         /// <param name="datum">IntU16 to write</param>
         /// <param name="output"><see cref="System.Array" /> to write to.</param>
         /// <param name="position">Position of the output array to write to</param>
@@ -517,7 +559,7 @@ namespace Bardez.Projects.ReusableCode
             ReusableIO.WriteVariableToArray(output, position, writeBytes);
         }
 
-        /// <summary>This public method writes a signed UInt16 to an output <see cref="System.IO.Stream" /></summary>
+        /// <summary>This public method writes an unsigned UInt16 to an output Byte array</summary>
         /// <param name="datum">IntU16 to write</param>
         /// <param name="output"><see cref="System.Array" /> to write to.</param>
         /// <param name="position">Position of the output array to write to</param>
@@ -528,7 +570,7 @@ namespace Bardez.Projects.ReusableCode
             ReusableIO.WriteVariableToArray(output, position, writeBytes, endianness);
         }
 
-        /// <summary>This public method writes a signed UInt32 to an output <see cref="System.IO.Stream" /></summary>
+        /// <summary>This public method writes an unsigned UInt32 to an output Byte array</summary>
         /// <param name="datum">UInt32 to write</param>
         /// <param name="output"><see cref="System.Array" /> to write to.</param>
         /// <param name="position">Position of the output array to write to</param>
@@ -538,7 +580,7 @@ namespace Bardez.Projects.ReusableCode
             ReusableIO.WriteVariableToArray(output, position, writeBytes);
         }
 
-        /// <summary>This public method writes a signed UInt32 to an output <see cref="System.IO.Stream" /></summary>
+        /// <summary>This public method writes an unsigned UInt32 to an output Byte array</summary>
         /// <param name="datum">UInt32 to write</param>
         /// <param name="output"><see cref="System.Array" /> to write to.</param>
         /// <param name="position">Position of the output array to write to</param>
@@ -549,7 +591,7 @@ namespace Bardez.Projects.ReusableCode
             ReusableIO.WriteVariableToArray(output, position, writeBytes, endianness);
         }
 
-        /// <summary>This public method writes a signed UInt64 to an output <see cref="System.IO.Stream" /></summary>
+        /// <summary>This public method writes an unsigned UInt64 to an output Byte array</summary>
         /// <param name="datum">UInt64 to write</param>
         /// <param name="output"><see cref="System.Array" /> to write to.</param>
         /// <param name="position">Position of the output array to write to</param>
@@ -559,12 +601,54 @@ namespace Bardez.Projects.ReusableCode
             ReusableIO.WriteVariableToArray(output, position, writeBytes);
         }
 
-        /// <summary>This public method writes a signed UInt64 to an output <see cref="System.IO.Stream" /></summary>
+        /// <summary>This public method writes an unsigned UInt64 to an output Byte array</summary>
         /// <param name="datum">UInt64 to write</param>
         /// <param name="output"><see cref="System.Array" /> to write to.</param>
         /// <param name="position">Position of the output array to write to</param>
         /// <param name="endianness">The desired endianness to be written</param>
         public static void WriteUInt64ToArray(UInt64 datum, Byte[] output, Int64 position, Endianness endianness)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            ReusableIO.WriteVariableToArray(output, position, writeBytes, endianness);
+        }
+
+        /// <summary>This public method writes a Single to an output Byte array</summary>
+        /// <param name="datum">Single to write</param>
+        /// <param name="output"><see cref="System.Array" /> to write to.</param>
+        /// <param name="position">Position of the output array to write to</param>
+        public static void WriteSingleToArray(Single datum, Byte[] output, Int64 position)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            ReusableIO.WriteVariableToArray(output, position, writeBytes);
+        }
+
+        /// <summary>This public method writes a Single to an output Byte array</summary>
+        /// <param name="datum">Single to write</param>
+        /// <param name="output"><see cref="System.Array" /> to write to.</param>
+        /// <param name="position">Position of the output array to write to</param>
+        /// <param name="endianness">The desired endianness to be written</param>
+        public static void WriteSingleToArray(Single datum, Byte[] output, Int64 position, Endianness endianness)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            ReusableIO.WriteVariableToArray(output, position, writeBytes, endianness);
+        }
+
+        /// <summary>This public method writes a Double to an output Byte array</summary>
+        /// <param name="datum">Double to write</param>
+        /// <param name="output"><see cref="System.Array" /> to write to.</param>
+        /// <param name="position">Position of the output array to write to</param>
+        public static void WriteDoubleToArray(Double datum, Byte[] output, Int64 position)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            ReusableIO.WriteVariableToArray(output, position, writeBytes);
+        }
+
+        /// <summary>This public method writes a Double to an output Byte array</summary>
+        /// <param name="datum">Double to write</param>
+        /// <param name="output"><see cref="System.Array" /> to write to.</param>
+        /// <param name="position">Position of the output array to write to</param>
+        /// <param name="endianness">The desired endianness to be written</param>
+        public static void WriteDoubleToArray(Double datum, Byte[] output, Int64 position, Endianness endianness)
         {
             Byte[] writeBytes = BitConverter.GetBytes(datum);
             ReusableIO.WriteVariableToArray(output, position, writeBytes, endianness);
@@ -716,6 +800,44 @@ namespace Bardez.Projects.ReusableCode
         /// <param name="output"><see cref="System.IO.Stream" /> to write to.</param>
         /// <param name="endianness">The desired endianness to be written</param>
         public static void WriteUInt64ToStream(UInt64 datum, Stream output, Endianness endianness)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            ReusableIO.WriteVariableToStream(output, writeBytes, endianness);
+        }
+
+        /// <summary>This public method writes a Single to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">Single to write</param>
+        /// <param name="output"><see cref="System.IO.Stream" /> to write to.</param>
+        public static void WriteSingleToStream(Single datum, Stream output)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            output.Write(writeBytes, 0, writeBytes.Length);
+        }
+
+        /// <summary>This public method writes a Single to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">Single to write</param>
+        /// <param name="output"><see cref="System.IO.Stream" /> to write to.</param>
+        /// <param name="endianness">The desired endianness to be written</param>
+        public static void WriteSingleToStream(Single datum, Stream output, Endianness endianness)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            ReusableIO.WriteVariableToStream(output, writeBytes, endianness);
+        }
+
+        /// <summary>This public method writes a Double to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">Double to write</param>
+        /// <param name="output"><see cref="System.IO.Stream" /> to write to.</param>
+        public static void WriteDoubleToStream(Double datum, Stream output)
+        {
+            Byte[] writeBytes = BitConverter.GetBytes(datum);
+            output.Write(writeBytes, 0, writeBytes.Length);
+        }
+
+        /// <summary>This public method writes a Double to an output <see cref="System.IO.Stream" /></summary>
+        /// <param name="datum">Double to write</param>
+        /// <param name="output"><see cref="System.IO.Stream" /> to write to.</param>
+        /// <param name="endianness">The desired endianness to be written</param>
+        public static void WriteDoubleToStream(Double datum, Stream output, Endianness endianness)
         {
             Byte[] writeBytes = BitConverter.GetBytes(datum);
             ReusableIO.WriteVariableToStream(output, writeBytes, endianness);
