@@ -16,7 +16,7 @@ namespace Bardez.Projects.ReusableCode
         public static void AppendSubItem(StringBuilder sb, Boolean condition, String append)
         {
             if (condition)
-                StringFormat.ToStringAlignment(append, 2, sb);
+                StringFormat.ToStringAlignment(append, 2, sb, false);
         }
 
         /// <summary>Outputs the byte array to screen as a string of hexidecimal characters for each byte</summary>
@@ -47,8 +47,9 @@ namespace Bardez.Projects.ReusableCode
 
         /// <summary>Formats the string to be indented to a uniform length</summary>
         /// <param name="descriptor">String to be aligned</param>
+        /// <param name="appendColon">Flag indicating whether or not to append a colon</param>
         /// <returns>the formatted string, with a leading newline and tab</returns>
-        public static String ToStringAlignment(String descriptor)
+        public static String ToStringAlignment(String descriptor, Boolean appendColon = true)
         {
             return StringFormat.ToStringAlignment(descriptor, 1);
         }
@@ -56,7 +57,8 @@ namespace Bardez.Projects.ReusableCode
         /// <summary>Formats the string to be indented to a uniform length</summary>
         /// <param name="descriptor">String to be aligned</param>
         /// <param name="builder">StringBuilder to write to</param>
-        public static void ToStringAlignment(String descriptor, StringBuilder builder)
+        /// <param name="appendColon">Flag indicating whether or not to append a colon</param>
+        public static void ToStringAlignment(String descriptor, StringBuilder builder, Boolean appendColon = true)
         {
             StringFormat.ToStringAlignment(descriptor, 1, builder);
         }
@@ -64,19 +66,23 @@ namespace Bardez.Projects.ReusableCode
         /// <summary>Formats the string to be indented to a uniform length</summary>
         /// <param name="descriptor">String to be aligned</param>
         /// <param name="tabs">Number of leading tabs in the indented descriptor</param>
+        /// <param name="appendColon">Flag indicating whether or not to append a colon</param>
         /// <returns>the formatted string, with a leading newline and tab</returns>
-        public static String ToStringAlignment(String descriptor, Int32 tabs)
+        public static String ToStringAlignment(String descriptor, Int32 tabs, Boolean appendColon = true)
         {
-            return StringFormat.ReturnAndIndent(String.Format("{0, -48}", descriptor + ":"), tabs);
+            String colon = appendColon ? ":" : String.Empty;
+            return StringFormat.ReturnAndIndent(String.Format("{0, -48}", descriptor + colon), tabs);
         }
 
         /// <summary>Formats the string to be indented to a uniform length</summary>
         /// <param name="descriptor">String to be aligned</param>
         /// <param name="tabs">Number of leading tabs in the indented descriptor</param>
+        /// <param name="appendColon">Flag indicating whether or not to append a colon</param>
         /// <param name="builder">StringBuilder to write to</param>
-        public static void ToStringAlignment(String descriptor, Int32 tabs, StringBuilder builder)
+        public static void ToStringAlignment(String descriptor, Int32 tabs, StringBuilder builder, Boolean appendColon = true)
         {
-            StringFormat.ReturnAndIndent(String.Format("{0, -48}", descriptor + ":"), tabs, builder);
+            String colon = appendColon ? ":" : String.Empty;
+            StringFormat.ReturnAndIndent(String.Format("{0, -48}", descriptor + colon), tabs, builder);
         }
 
         /// <summary>Formats the string to be indented with a leading newline and specified number of tabs</summary>
