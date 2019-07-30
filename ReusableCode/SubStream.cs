@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Remoting;
-using System.Threading;
 
 namespace Bardez.Projects.ReusableCode
 {
