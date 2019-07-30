@@ -78,6 +78,7 @@
   <ItemGroup>
     <Compile Include="Bit Stream.cs" />
     <Compile Include="EnumDescriptionToString.cs" />
+    <Compile Include="ExceptionExtension.cs" />
     <Compile Include="IEnumerableExtensions.cs" />
     <Compile Include="Reusable IO.cs" />
     <Compile Include="GenericOrderedDictionary.cs" />
