@@ -77,20 +77,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArrayExtensions.cs" />
-    <Compile Include="Bit Stream.cs" />
+    <Compile Include="BitStream.cs" />
     <Compile Include="EnumDescriptionToString.cs" />
     <Compile Include="ExceptionExtension.cs" />
     <Compile Include="IEnumerableExtensions.cs" />
-    <Compile Include="Reusable IO.cs" />
+    <Compile Include="ReusableIO.cs" />
     <Compile Include="GenericOrderedDictionary.cs" />
-    <Compile Include="Int32Extension.cs" />
+    <Compile Include="IntExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Memory Stream Extension.cs" />
+    <Compile Include="MemoryStreamExtension.cs" />
     <Compile Include="StaticReflection.cs" />
-    <Compile Include="String Format.cs" />
+    <Compile Include="StringFormat.cs" />
     <Compile Include="StringExtension.cs" />
     <Compile Include="SubStream.cs" />
-    <Compile Include="Peek Seek Text Reader.cs" />
+    <Compile Include="PeekSeekTextReader.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
