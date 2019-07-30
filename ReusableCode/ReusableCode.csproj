@@ -76,6 +76,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArrayExtensions.cs" />
     <Compile Include="Bit Stream.cs" />
     <Compile Include="EnumDescriptionToString.cs" />
     <Compile Include="ExceptionExtension.cs" />
