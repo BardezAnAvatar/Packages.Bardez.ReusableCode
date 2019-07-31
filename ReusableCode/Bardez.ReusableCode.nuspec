@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Bardez.ReusableCode</id>
+    <version>1.0.0</version>
+    <title>Bardez.ReusableCode</title>
+    <authors>Erik "Bardez" Frantz</authors>
+    <owners>Erik "Bardez" Frantz</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Reusable Code</description>
+    <summary>Generic, re-usable libraries</summary>
+    <releaseNotes></releaseNotes>
+    <copyright></copyright>
+    <language>en-GB</language>
+    <tags>Reusable</tags>
+  </metadata>
+  <files>
+    <file src="**/*.cs" target="src/" />
+    <file src="bin\Debug\*.dll" target="lib/net40/" />
+    <file src="bin\Debug\*.pdb" target="lib/net40/" />
+  </files>
+</package>
